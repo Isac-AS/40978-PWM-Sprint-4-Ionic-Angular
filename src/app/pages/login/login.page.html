@@ -1,0 +1,57 @@
+<app-header [title]="'Iniciar sesión'"></app-header>
+<ion-content>
+  <form [formGroup]="credentials" (ngSubmit)="onSubmit()">
+
+    <ion-item lines="full">
+      <ion-label position="floating"> Correo eléctronico</ion-label>
+      <ion-input type="text" class="form-control" placeholder="Correo Electrónico" formControlName="email"></ion-input>
+      <ion-item
+        *ngIf="credentials.get('email')!.invalid && (credentials.get('email')!.dirty || credentials.get('email')!.touched)">
+        <ion-text color="danger" class="form-error" *ngIf="credentials.get('email')!.errors?.['required']">
+          Campo Obligatorio
+        </ion-text>
+        <ion-text color="danger" class="form-error" *ngIf="credentials.get('email')!.errors?.['email']">
+          Debe introducir una dirección de correo electrónico
+        </ion-text>
+      </ion-item>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating"> Contraseña </ion-label>
+      <ion-input type="password" class="form-control" placeholder="Contraseña" formControlName="password"></ion-input>
+      <ion-item
+        *ngIf="credentials.get('password')!.invalid && (credentials.get('password')!.dirty || credentials.get('password')!.touched)">
+        <ion-text color="danger" *ngIf="credentials.get('password')!.errors?.['required']">
+          Campo Obligatorio
+        </ion-text>
+      </ion-item>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" expand="block">Iniciar sesión</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+  <ion-row>
+    <ion-col>
+      <hr>
+      <hr>
+      <hr>
+      <hr>
+      <ion-item>
+        <ion-label id="centeredMessage">¿Eres nuevo?</ion-label>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button [routerLink]="['/register']" expand="block" color="danger">
+        <ion-icon name="person-add" slot="start"></ion-icon>
+        <ion-label>Regístrate</ion-label>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+</ion-content>
