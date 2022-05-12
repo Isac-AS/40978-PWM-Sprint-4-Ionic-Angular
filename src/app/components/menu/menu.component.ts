@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
   selector: 'app-menu',
@@ -17,7 +18,8 @@ export class MenuComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private interaction: InteractionService
   ) { }
 
   ngOnInit() { 
@@ -27,10 +29,11 @@ export class MenuComponent implements OnInit {
     })
   }
 
-  logOut() {
-    const res = this.auth.logout().catch(error => {
+  async logOut() {
+    const res = await this.auth.logout().catch(error => {
       alert('Parece haber habido un problema. Inténtelo de nuevo.')
     });
+    this.interaction.presentToast('Sesión cerrada con éxito')
     this.router.navigate(['/home']);
   }
 

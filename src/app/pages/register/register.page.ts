@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { PolyvalentService } from 'src/app/services/polyvalent.service';
 import { DatabaseService } from 'src/app/services/database.service';
+import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
   selector: 'app-register',
@@ -30,6 +31,7 @@ export class RegisterPage implements OnInit {
     private auth: AuthService,
     private db: DatabaseService,
     private utils: PolyvalentService,
+    private interaction: InteractionService
   ) {
     this.userData = this.utils.getCleanUser();
   }
@@ -37,6 +39,7 @@ export class RegisterPage implements OnInit {
   ngOnInit() { }
 
   async register() {
+    this.interaction.presentLoading('Registrando usuario...')
     this.fillUserInfo();
     const res = await this.auth.register(this.userData).catch(error => {
       this.generateErrorMessage(error)
@@ -46,7 +49,8 @@ export class RegisterPage implements OnInit {
       this.userData.id = res!.user!.uid;
       this.userData.password = 'null';
       await this.db.createDocument(this.userData, 'users', this.userData.id);
-      //toast
+      this.interaction.dismissLoading();
+      this.interaction.presentToast('¡Usuario registrado con éxito!')
       await this.router.navigate(['/home']);
     }
   }
