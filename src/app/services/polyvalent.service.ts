@@ -7,20 +7,4 @@ import { User } from '../models/interfaces';
 export class PolyvalentService {
 
   constructor() { }
-
-  getCleanUser(): User {
-    return {
-      email: '',
-      password: '',
-      name: '',
-      surname: '',
-      bio: '',
-      id: '',
-      profile: 'regular',
-      photoURL: '',
-      shoppingCart: [],
-    }
-  }
-
-
 }

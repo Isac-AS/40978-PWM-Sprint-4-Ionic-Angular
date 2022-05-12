@@ -26,4 +26,18 @@ export class AuthService {
   userState() {
     return this.authFirebase.authState;
   }
+
+  async getUid() {
+    const user = await this.authFirebase.currentUser;
+    if (user) {
+      return user!.uid
+    } else {
+      return null;
+    }
+  }
+
+  async isAdmin(): Promise<boolean> {
+    const currentUid = await this.getUid();
+    return currentUid === this.adminUid;
+  }
 }

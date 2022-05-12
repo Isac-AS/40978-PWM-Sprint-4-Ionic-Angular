@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { PolyvalentService } from 'src/app/services/polyvalent.service';
 import { DatabaseService } from 'src/app/services/database.service';
 import { InteractionService } from 'src/app/services/interaction.service';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-register',
@@ -30,10 +31,10 @@ export class RegisterPage implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private db: DatabaseService,
-    private utils: PolyvalentService,
+    private data: DataService,
     private interaction: InteractionService
   ) {
-    this.userData = this.utils.getCleanUser();
+    this.userData = this.data.getCleanUser();
   }
 
   ngOnInit() { }
