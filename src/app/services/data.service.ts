@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/interfaces';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { DatabaseService } from './database.service';
 import { AuthService } from './auth.service';
 import { take } from 'rxjs/operators';
@@ -12,11 +12,13 @@ export class DataService {
 
   private user: User;
   public currentUser: BehaviorSubject<User>;
+  private userSubscription: Subscription;
 
   constructor(
     private auth: AuthService,
     private db: DatabaseService,
-  ) { 
+  ) {
+    this.user = this.getCleanUser();
     this.currentUser = new BehaviorSubject(this.user);
   }
 
@@ -39,6 +41,31 @@ export class DataService {
       profile: 'regular',
       photoURL: '',
       shoppingCart: [],
+    }
+  }
+
+  subscribeToUserData() {
+    this.userSubscription = this.db.readDocument<User>('users', this.user.id).subscribe(userData => {
+      this.user = userData;
+    })
+  }
+
+  unsubscribeToUserData() {
+    this.userSubscription.unsubscribe();
+  }
+
+  getCleanProduct() {
+    return {
+      id: '',
+      name: '',
+      extendedName: '',
+      description: '',
+      price: '',
+      priceWithoutTax: '',
+      brand: '',
+      imageUrl: '',
+      category: '',
+      discount: '',
     }
   }
 }

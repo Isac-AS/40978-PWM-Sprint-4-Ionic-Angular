@@ -53,6 +53,7 @@ export class RegisterPage implements OnInit {
       this.interaction.dismissLoading();
       this.interaction.presentToast('¡Usuario registrado con éxito!')
       await this.router.navigate(['/home']);
+      this.data.fetchCurrentUserData();
     }
   }
 
