@@ -1,0 +1,62 @@
+<app-header-with-arrow [title]="'Perfil de ' + userData.name"></app-header-with-arrow>
+
+<ion-content>
+  <div id="profilePic">
+    <ion-input type="file" id="files" (change)="uploadProfilePicture($event)" class="hidden"></ion-input>
+    <ion-avatar>
+      <img [src]="userData.photoURL">
+    </ion-avatar>
+    <ion-title>{{ userData.name }} {{ userData.surname }}</ion-title>
+  </div>
+
+  <ion-item lines="full">
+    <ion-icon name="mail" slot="start"></ion-icon>
+    <ion-label>{{ userData.email }}</ion-label>
+  </ion-item>
+
+  <form [formGroup]="currentUserData" (ngSubmit)="updateUserData()">
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input  type="text" class="form-control" 
+                  placeholder="Nombre de usuario" 
+                  formControlName="username"
+                  [value]="userData.name"></ion-input>
+      <ion-item
+        *ngIf="currentUserData.get('username')!.invalid && (currentUserData.get('username')!.dirty || currentUserData.get('username')!.touched)">
+        <ion-text color="danger" class="form-error" *ngIf="currentUserData.get('username')!.errors?.['required']">
+          Campo Obligatorio
+        </ion-text>
+      </ion-item>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Apellido(s)</ion-label>
+      <ion-input  type="text" class="form-control" 
+                  placeholder="Apellidos" 
+                  formControlName="surname"
+                  [value]="userData.surname"></ion-input>
+      <ion-item
+        *ngIf="currentUserData.get('surname')!.invalid && (currentUserData.get('surname')!.dirty || currentUserData.get('surname')!.touched)">
+        <ion-text color="danger" class="form-error" *ngIf="currentUserData.get('surname')!.errors?.['required']">
+          Campo Obligatorio
+        </ion-text>
+      </ion-item>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Biografía</ion-label>
+      <ion-textarea  type="text" class="form-control" 
+                  placeholder="Información adicional" 
+                  formControlName="bio"
+                  [value]="userData.bio"></ion-textarea>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" expand="block">Modificar datos</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+</ion-content>
