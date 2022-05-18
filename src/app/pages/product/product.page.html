@@ -11,12 +11,14 @@
         </ion-card-content>
         <ion-text id="description">{{ product.description }}</ion-text>
       </ion-card>
-      <ion-button *ngIf="!isInWishlist(product.id)" (click)="addToWishlist(product.id)">
-        <ion-icon name="star-outline" slot="start"></ion-icon>
-        <ion-label>Añadir a la lista de deseos</ion-label>
-      </ion-button>
-      <ion-button *ngIf="isInWishlist(product.id)" (click)="removeFromWishlist(product.id)">
-        <ion-icon name="star" slot="start"></ion-icon>
-        <ion-label>Eliminar de la lista de deseos</ion-label>
-      </ion-button>
+      <div *ngIf="isLoggedIn">
+        <ion-button *ngIf="!isInWishlist(product.id)" (click)="addToWishlist(product.id)">
+          <ion-icon name="star-outline" slot="start"></ion-icon>
+          <ion-label>Añadir a la lista de deseos</ion-label>
+        </ion-button>
+        <ion-button *ngIf="isInWishlist(product.id)" (click)="removeFromWishlist(product.id)">
+          <ion-icon name="star" slot="start"></ion-icon>
+          <ion-label>Eliminar de la lista de deseos</ion-label>
+        </ion-button>
+      </div>
 </ion-content>
