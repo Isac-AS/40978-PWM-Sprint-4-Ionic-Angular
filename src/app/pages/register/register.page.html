@@ -24,6 +24,9 @@
           <ion-text color="danger" class="form-error" *ngIf="registerForm.get('username')!.errors?.['required']">
             Campo Obligatorio
           </ion-text>
+          <ion-text color="danger" *ngIf="registerForm.get('username')!.errors?.['minlength']">
+            Debe tener una longitud mínima de 2 caracteres
+          </ion-text>
         </ion-item>
       </ion-item>
 
@@ -35,12 +38,15 @@
           <ion-text color="danger" class="form-error" *ngIf="registerForm.get('surname')!.errors?.['required']">
             Campo Obligatorio
           </ion-text>
+          <ion-text color="danger" *ngIf="registerForm.get('surname')!.errors?.['minlength']">
+            Debe tener una longitud mínima de 2 caracteres
+          </ion-text>
         </ion-item>
       </ion-item>
       
       <ion-item lines="full">
         <ion-label position="floating">Contraseña</ion-label>
-        <ion-input type="password" class="form-control" placeholder="Contraseña" formControlName="password"></ion-input>
+        <ion-input clearOnEdit="false" type="password" class="form-control" placeholder="Contraseña" formControlName="password"></ion-input>
         <ion-item
           *ngIf="registerForm.get('password')!.invalid && (registerForm.get('password')!.dirty || registerForm.get('password')!.touched)">
           <ion-text color="danger" *ngIf="registerForm.get('password')!.errors?.['required']">
@@ -54,7 +60,7 @@
 
       <ion-item lines="full">
         <ion-label position="floating">Repetir contraseña</ion-label>
-        <ion-input type="password" class="form-control" placeholder="Repetir contraseña" formControlName="alt_password"></ion-input>
+        <ion-input clearOnEdit="false" type="password" class="form-control" placeholder="Repetir contraseña" formControlName="alt_password"></ion-input>
         <ion-item *ngIf="!onPasswordChange() && registerForm.get('alt_password')!.touched">
           <ion-text color="danger">
             Las contraseñas deben coincidir
@@ -63,7 +69,7 @@
       </ion-item>
       <ion-row>
         <ion-col>
-          <ion-button type="submit" expand="block" [disabled]="!registerForm.valid" color="danger">Registrarse</ion-button>
+          <ion-button type="submit" expand="block" [disabled]="!registerForm.valid || !onPasswordChange()" color="danger">Registrarse</ion-button>
         </ion-col>
       </ion-row>
     </form>
