@@ -89,7 +89,10 @@ export class RegisterPage implements OnInit {
       this.confirm_password.setErrors(null);
     } else {
       this.confirm_password.setErrors({ mismatch: true });
+      console.log("entrando en comprobacion contra");
     }
+
+    
   }
 
   ionViewWillLeave() {
