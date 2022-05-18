@@ -47,8 +47,8 @@ export class ProductPage implements OnInit {
     this.userStateObserver = this.auth.userState();
     this.userStateSubscription = this.userStateObserver.subscribe( res => {
       this.isLoggedIn = !!res;
+      if (this.isLoggedIn) this.userSubscription();
     })
-    if (this.isLoggedIn) this.userSubscription();
   }
 
   getProductSubscription() {

@@ -78,6 +78,7 @@ export class WishlistPage implements OnInit {
   ionViewWillLeave() {
     this.userDataSubscription.unsubscribe();
     this.productCollectionSubscription.unsubscribe();
+    this.wishlistIds = []
   }
 
   contains(productId: string): boolean {
