@@ -74,7 +74,7 @@ export class ProductPage implements OnInit {
   async addToWishlist(productId: string) {
     this.list.addToWishlist(productId, this.userData);
     if (this._sqlite.platform != 'web') {
-      let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
+      let db = await this._sqlite.createConnection("database" + this.userData.id, false, "no-encryption", 1)
       await db.open();
       let ret: any = await db.execute(createSchema);
       ret = await db.execute(`INSERT INTO wishlist (id) VALUES ("${productId}");`);
@@ -87,7 +87,7 @@ export class ProductPage implements OnInit {
   async removeFromWishlist(productId: string) {
     this.list.removeFromWishList(productId, this.userData);
     if (this._sqlite.platform != 'web') {
-      let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
+      let db = await this._sqlite.createConnection("database" + this.userData.id, false, "no-encryption", 1)
       await db.open();
       let ret: any = await db.execute(createSchema);
       ret = await db.execute(`DELETE FROM wishlist WHERE id='${productId}';`);

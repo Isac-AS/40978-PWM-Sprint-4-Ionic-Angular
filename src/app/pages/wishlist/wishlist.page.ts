@@ -58,7 +58,7 @@ export class WishlistPage implements OnInit {
 
   async loadFromDB() {
     if (this._sqlite.platform != "web") {
-      let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
+      let db = await this._sqlite.createConnection("database" + this.userData.id, false, "no-encryption", 1)
       await db.open();
       let ret: any = await db.execute(createSchema);
       ret = await db.query(`SELECT * FROM wishlist;`);
