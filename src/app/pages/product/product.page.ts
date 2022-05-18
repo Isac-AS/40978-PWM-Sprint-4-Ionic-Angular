@@ -34,9 +34,9 @@ export class ProductPage implements OnInit {
     this.product = this.data.getCleanProduct();
     this.userData = this.data.getCleanUser();
     this.productId = this.data.getProductId();
-   }
+  }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.getProductSubscription();
@@ -64,24 +64,29 @@ export class ProductPage implements OnInit {
 
   async addToWishlist(productId: string) {
     this.list.addToWishlist(productId, this.userData);
-    let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
-    await db.open();
-    let ret: any = await db.execute(createSchema);
-    ret = await db.execute(`INSERT INTO wishlist (id) VALUES ("${productId}");`);
+    if (this._sqlite.platform != 'web') {
+      let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
+      await db.open();
+      let ret: any = await db.execute(createSchema);
+      console.log('$$$ ret.changes.changes in db ' + ret.changes.changes)
+      ret = await db.execute(`INSERT INTO wishlist (id) VALUES ("${productId}");`);
+    }
   }
 
   async removeFromWishlist(productId: string) {
     this.list.removeFromWishList(productId, this.userData);
-    let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
-    await db.open();
-    let ret: any = await db.execute(createSchema);
-    ret = await db.execute(`DELETE FROM wishlist WHERE id='${productId}';`);
+    if (this._sqlite.platform != 'web') {
+      let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
+      await db.open();
+      let ret: any = await db.execute(createSchema);
+      ret = await db.execute(`DELETE FROM wishlist WHERE id='${productId}';`);
+    }
   }
 
   isInWishlist(productId: string): boolean {
     return this.list.isInWishlist(this.userData.wishlist, productId);
   }
 
-  
+
 
 }

@@ -31,23 +31,20 @@ export class WishlistPage implements OnInit {
     private _sqlite: SQLiteService
   ) {
     this.userData = this.data.getCleanUser();
-   }
+  }
 
   async ngOnInit() {
     this.productCollectionSubscription = this.db.readCollection<Product>('products').subscribe(async elements => {
       this.products = elements;
     })
-    let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
-    await db.open();
-    let ret: any = await db.execute(createSchema);
-    ret = await db.execute(`SELECT * FROM wishlist;`);
-    for (let productId of ret.values) {
-      this.wishlistIds.push(productId)
-    }
   }
 
   ionViewWillEnter() {
     this.userSubscription();
+  }
+  
+  ionViewDidEnter() {
+    this.loadFromDB();
   }
 
   userSubscription() {
@@ -58,17 +55,33 @@ export class WishlistPage implements OnInit {
     })
   }
 
+  async loadFromDB() {
+    if (this._sqlite.platform != "web") {
+      let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
+      await db.open();
+      let ret: any = await db.execute(createSchema);
+      ret = await db.execute(`SELECT * FROM wishlist;`);
+      for (let productId of ret.values) {
+        this.wishlistIds.push(productId)
+      }
+    } else {
+      this.wishlistIds = this.userData.wishlist
+    }
+  }
+
   ionViewWillLeave() {
     this.userDataSubscription.unsubscribe();
     this.productCollectionSubscription.unsubscribe();
   }
-  
+
   async removeFromWishlist(productId: string) {
     this.list.removeFromWishList(productId, this.userData);
-    let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
-    await db.open();
-    let ret: any = await db.execute(createSchema);
-    ret = await db.execute(`DELETE FROM wishlist WHERE id='${productId}';`);
+    if (this._sqlite.platform != "web") {
+      let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
+      await db.open();
+      let ret: any = await db.execute(createSchema);
+      ret = await db.execute(`DELETE FROM wishlist WHERE id='${productId}';`);
+    }
   }
 
   contains(productId: string): boolean {
