@@ -46,12 +46,14 @@
       <ion-label position="floating">Nombre</ion-label>
       <ion-input  type="text" class="form-control" 
                   placeholder="Nombre de usuario" 
-                  formControlName="username"
-                  [(ngModel)]="userData.name"></ion-input>
+                  formControlName="username"></ion-input>
       <ion-item
         *ngIf="currentUserData.get('username')!.invalid && (currentUserData.get('username')!.dirty || currentUserData.get('username')!.touched)">
         <ion-text color="danger" class="form-error" *ngIf="currentUserData.get('username')!.errors?.['required']">
           Campo Obligatorio
+        </ion-text>
+        <ion-text color="danger" class="form-error" *ngIf="currentUserData.get('username')!.errors?.['minlength']">
+          Debe contener más de dos caracteres
         </ion-text>
       </ion-item>
     </ion-item>
@@ -60,12 +62,14 @@
       <ion-label position="floating">Apellido(s)</ion-label>
       <ion-input  type="text" class="form-control" 
                   placeholder="Apellidos" 
-                  formControlName="surname"
-                  [(ngModel)]="userData.surname"></ion-input>
+                  formControlName="surname"></ion-input>
       <ion-item
         *ngIf="currentUserData.get('surname')!.invalid && (currentUserData.get('surname')!.dirty || currentUserData.get('surname')!.touched)">
         <ion-text color="danger" class="form-error" *ngIf="currentUserData.get('surname')!.errors?.['required']">
           Campo Obligatorio
+        </ion-text>
+        <ion-text color="danger" class="form-error" *ngIf="currentUserData.get('surname')!.errors?.['minlength']">
+          Debe contener más de dos caracteres
         </ion-text>
       </ion-item>
     </ion-item>
@@ -75,12 +79,11 @@
       <ion-textarea  type="text" class="form-control" 
                   placeholder="Información adicional" 
                   formControlName="bio"
-                  autoGrow="true"
-                  [(ngModel)]="userData.bio"></ion-textarea>
+                  autoGrow="true"></ion-textarea>
     </ion-item>
 
     <div id="buttons">
-      <ion-button type="submit" expand="block" *ngIf="!show">Guardar datos</ion-button>
+      <ion-button type="submit" expand="block" [disabled]="!currentUserData.valid" *ngIf="!show">Guardar datos</ion-button>
       <ion-button type="button" expand="block" *ngIf="!show" (click)="cancelModifyUser()">Cancelar</ion-button>
     </div>
 

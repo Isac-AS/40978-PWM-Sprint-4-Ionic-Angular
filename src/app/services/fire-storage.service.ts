@@ -16,6 +16,7 @@ export class FireStorageService {
     const filePath = folder + '/' + id;
     const task = this.storage.upload(filePath, file);
     return task;
+
   }
 
   getRef(path: string) {

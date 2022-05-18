@@ -24,6 +24,7 @@ export class RegisterPage implements OnInit {
   });
 
   private userData: User;
+  public passwordMatch: boolean = false;
 
   constructor(
     private router: Router,
@@ -76,20 +77,11 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  get password(): AbstractControl {
-    return this.registerForm.controls['password'];
-  }
-
-  get confirm_password(): AbstractControl {
-    return this.registerForm.controls['alt_password'];
-  }
 
   onPasswordChange(){
-    if (this.confirm_password.value === this.password.value) {
-      this.confirm_password.setErrors(null);
-    } else {
-      this.confirm_password.setErrors({ mismatch: true });
-    }
+    return (this.registerForm.value.password === this.registerForm.value.alt_password);
+    
+    
   }
 
   ionViewWillLeave() {

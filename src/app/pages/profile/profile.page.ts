@@ -8,6 +8,7 @@ import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Subscription } from 'rxjs';
 import { FireStorageService } from 'src/app/services/fire-storage.service';
+import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-profile',
@@ -45,6 +46,13 @@ export class ProfilePage implements OnInit {
     this.auth.getUid().then(currentUserId => {
       this.userDataSubscription = this.db.readDocument<User>('users', currentUserId).subscribe(userData => {
         this.userData = userData;
+        this.currentUserData.setValue(
+           {
+             username: userData.name,
+             surname: userData.surname,
+             bio: userData.bio
+           }
+        )
       })
     })
   }
@@ -55,6 +63,7 @@ export class ProfilePage implements OnInit {
     await this.db.updateDocument<User>(this.userData, 'users', this.userData.id);
     this.interaction.dismissLoading();
     this.interaction.presentToast('¡Datos de usuarios modificados con éxito!')
+    this.cancelModifyUser();
   }
 
   fillUserInfo() {
@@ -63,13 +72,16 @@ export class ProfilePage implements OnInit {
     this.userData.bio = this.currentUserData.value.bio;
   }
 
-  uploadProfilePicture(imageInput: any) {
-    this.storageService.uploadFile(imageInput, 'profilePictures', this.userData.id);
+  async uploadProfilePicture(imageInput: any) {
+    this.interaction.presentLoading('Modificando imagen....');
+    await this.storageService.uploadFile(imageInput, 'profilePictures', this.userData.id);
     const ref = this.storageService.getRef('profilePictures/' + this.userData.id);
     ref.getDownloadURL().subscribe( async url => {
       this.userData.photoURL = await url;
-      this.db.updateDocument<User>(this.userData, 'users', this.userData.id)
+      await this.db.updateDocument<User>(this.userData, 'users', this.userData.id);
     })
+    this.interaction.dismissLoading();
+    this.interaction.presentToast('¡Imagen de perfil modificada con éxito!')
   }
 
   modifyUser() {
