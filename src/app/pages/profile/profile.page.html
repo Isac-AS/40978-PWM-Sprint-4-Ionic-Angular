@@ -6,7 +6,10 @@
       <img [src]="userData.photoURL">
     </ion-avatar>
     <ion-title>{{ userData.name }} {{ userData.surname }}</ion-title>
-    <ion-input type="file" id="files" *ngIf="!show" (change)="uploadProfilePicture($event)" class="hidden"></ion-input>
+    <div *ngIf="!show" id="fileSelector">
+      <input type="file" id="files" (change)="uploadProfilePicture($event)" class="hidden">
+      <label for="files">Seleccionar nueva imagen</label>
+    </div>
   </div>
 
   <ion-list *ngIf="show">
