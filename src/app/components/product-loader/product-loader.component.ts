@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Product } from 'src/app/models/interfaces';
-import { DataService } from 'src/app/services/data.service';
 import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
@@ -19,7 +18,6 @@ export class ProductLoaderComponent implements OnInit {
   private productCollectionSubscription: Subscription;
 
   constructor(
-    private data: DataService,
     private db: DatabaseService,
   ) { }
 
@@ -32,8 +30,4 @@ export class ProductLoaderComponent implements OnInit {
   ngOnDestroy() {
     this.productCollectionSubscription.unsubscribe();
   }
-
-
-  
-
 }
