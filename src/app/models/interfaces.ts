@@ -68,18 +68,3 @@ export const createSchema: string = `
     id TEXT PRIMARY KEY NOT NULL
   );
   `;
-
-/*export const createSchema: string = `
-  CREATE TABLE IF NOT EXISTS wishlist (
-    id TEXT PRIMARY KEY NOT NULL,
-    name TEXT,
-    extendedName TEXT,
-    description TEXT,
-    price REAL,
-    priceWithoutTax REAL,
-    brand TEXT,
-    imageUrl TEXT,
-    category TEXT,
-    discount REAL
-  );
-  `;*/

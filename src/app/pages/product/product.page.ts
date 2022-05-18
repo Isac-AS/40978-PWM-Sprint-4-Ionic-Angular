@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Product, User, createSchema } from 'src/app/models/interfaces';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
@@ -22,6 +22,10 @@ export class ProductPage implements OnInit {
   public userData: User;
   private userDataSubscription: Subscription;
 
+  public isLoggedIn: boolean;
+  private userStateObserver: Observable<any>;
+  private userStateSubscription: Subscription;
+
   sqlite: any;
 
   constructor(
@@ -40,7 +44,11 @@ export class ProductPage implements OnInit {
 
   ionViewWillEnter() {
     this.getProductSubscription();
-    this.userSubscription();
+    this.userStateObserver = this.auth.userState();
+    this.userStateSubscription = this.userStateObserver.subscribe( res => {
+      this.isLoggedIn = !!res;
+    })
+    if (this.isLoggedIn) this.userSubscription();
   }
 
   getProductSubscription() {
@@ -58,8 +66,9 @@ export class ProductPage implements OnInit {
   }
 
   ionViewWillLeave() {
+    this.userStateSubscription.unsubscribe();
     this.productSubscription.unsubscribe();
-    this.userDataSubscription.unsubscribe();
+    if (this.userDataSubscription) this.userDataSubscription.unsubscribe();
   }
 
   async addToWishlist(productId: string) {
