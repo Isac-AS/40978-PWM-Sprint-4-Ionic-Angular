@@ -23,7 +23,8 @@
     id: string
     profile: 'admin' | 'regular'
     photoURL: string
-    shoppingCart: Product[]
+    shoppingCart: Product[],
+    wishlist: Product[],
   }
 
     export interface Ticket {

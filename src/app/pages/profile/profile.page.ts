@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/interfaces';
-import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { DatabaseService } from 'src/app/services/database.service';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { InteractionService } from 'src/app/services/interaction.service';
+import { Subscription } from 'rxjs';
+import { FireStorageService } from 'src/app/services/fire-storage.service';
 
 @Component({
   selector: 'app-profile',
@@ -15,84 +17,62 @@ import { InteractionService } from 'src/app/services/interaction.service';
 export class ProfilePage implements OnInit {
 
   public errorMessage: string;
-  public newUserData = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+  public currentUserData = this.fb.group({
     username: ['', [Validators.required, Validators.minLength(2)]],
-    surname: ['', [Validators.required, Validators.minLength(2)]]
+    surname: ['', [Validators.required, Validators.minLength(2)]],
+    bio: ['']
   });
 
-  private userData: User;
+  public userData: User;
+  private userDataSubscription: Subscription;
 
   constructor(
-    private router: Router,
     private fb: FormBuilder,
     private auth: AuthService,
     private db: DatabaseService,
     private data: DataService,
-    private interaction: InteractionService
+    private interaction: InteractionService,
+    private storageService: FireStorageService
   ) { 
     this.userData = this.data.getCleanUser();
   }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  ionViewWillEnter() {
+    this.auth.getUid().then(currentUserId => {
+      this.userDataSubscription = this.db.readDocument<User>('users', currentUserId).subscribe(userData => {
+        this.userData = userData;
+      })
+    })
   }
 
   async updateUserData() {
-    this.interaction.presentLoading('Registrando usuario...')
+    this.interaction.presentLoading('Modificando datos...');
     this.fillUserInfo();
-    const res = await this.auth.register(this.userData).catch(error => {
-      this.generateErrorMessage(error)
-    });
-
-    if (res) {
-      this.userData.id = res!.user!.uid;
-      this.userData.password = 'null';
-      await this.db.createDocument(this.userData, 'users', this.userData.id);
-      this.interaction.dismissLoading();
-      this.interaction.presentToast('¡Usuario registrado con éxito!')
-      await this.router.navigate(['/home']);
-      this.data.fetchCurrentUserData();
-    }
+    await this.db.updateDocument<User>(this.userData, 'users', this.userData.id);
+    this.interaction.dismissLoading();
+    this.interaction.presentToast('¡Datos de usuarios modificados con éxito!')
   }
 
   fillUserInfo() {
-    this.userData.name = this.newUserData.value.username;
-    this.userData.surname = this.newUserData.value.surname;
-    this.userData.email = this.newUserData.value.email;
+    this.userData.name = this.currentUserData.value.username;
+    this.userData.surname = this.currentUserData.value.surname;
+    this.userData.bio = this.currentUserData.value.bio;
   }
 
-  generateErrorMessage(error: any) {
-    switch (error.code) {
-      case "auth/email-already-in-use":
-        this.errorMessage = "Error: El email introducido ya está en uso";
-        break;
-      case "auth/internal-error":
-        this.errorMessage = "Error del sistema. Inténtelo de nuevo";
-        break;
-      default:
-        this.errorMessage = "Error desconocido. Inténtelo de nuevo";
-    }
-  }
-
-  get password(): AbstractControl {
-    return this.newUserData.controls['password'];
-  }
-
-  get confirm_password(): AbstractControl {
-    return this.newUserData.controls['alt_password'];
-  }
-
-  onPasswordChange(){
-    if (this.confirm_password.value === this.password.value) {
-      this.confirm_password.setErrors(null);
-    } else {
-      this.confirm_password.setErrors({ mismatch: true });
-    }
+  uploadProfilePicture(imageInput: any) {
+    this.storageService.uploadFile(imageInput, 'profilePictures', this.userData.id);
+    const ref = this.storageService.getRef('profilePictures/' + this.userData.id);
+    ref.getDownloadURL().subscribe( async url => {
+      this.userData.photoURL = await url;
+      this.db.updateDocument<User>(this.userData, 'users', this.userData.id)
+    })
   }
 
   ionViewWillLeave() {
-    this.newUserData.reset();
+    this.currentUserData.reset();
+    this.userDataSubscription.unsubscribe();
   }
-
 
 }

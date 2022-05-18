@@ -3,7 +3,6 @@ import { User } from 'src/app/models/interfaces';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { PolyvalentService } from 'src/app/services/polyvalent.service';
 import { DatabaseService } from 'src/app/services/database.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { DataService } from 'src/app/services/data.service';
@@ -53,7 +52,6 @@ export class RegisterPage implements OnInit {
       this.interaction.dismissLoading();
       this.interaction.presentToast('¡Usuario registrado con éxito!')
       await this.router.navigate(['/home']);
-      this.data.fetchCurrentUserData();
     }
   }
 
@@ -62,6 +60,7 @@ export class RegisterPage implements OnInit {
     this.userData.surname = this.registerForm.value.surname;
     this.userData.email = this.registerForm.value.email;
     this.userData.password = this.registerForm.value.password;
+    this.userData.photoURL = "https://firebasestorage.googleapis.com/v0/b/pwm-sprint3-angular.appspot.com/o/user-pic.jpg?alt=media&token=4e4c6102-6a80-449c-ad77-e8d34b70a777"
   }
 
   generateErrorMessage(error: any) {

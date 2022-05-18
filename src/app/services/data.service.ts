@@ -22,14 +22,6 @@ export class DataService {
     this.currentUser = new BehaviorSubject(this.user);
   }
 
-  fetchCurrentUserData() {
-    this.auth.getUid().then(currentUserId => {
-      this.db.readDocument<User>('users', currentUserId).pipe(take(1)).subscribe(userData => {
-        this.user = userData;
-      })
-    })
-  }
-
   getCleanUser(): User {
     return {
       email: '',
@@ -41,19 +33,10 @@ export class DataService {
       profile: 'regular',
       photoURL: '',
       shoppingCart: [],
+      wishlist: []
     }
   }
-
-  subscribeToUserData() {
-    this.userSubscription = this.db.readDocument<User>('users', this.user.id).subscribe(userData => {
-      this.user = userData;
-    })
-  }
-
-  unsubscribeToUserData() {
-    this.userSubscription.unsubscribe();
-  }
-
+  
   getCleanProduct() {
     return {
       id: '',
@@ -67,5 +50,17 @@ export class DataService {
       category: '',
       discount: '',
     }
+  }
+
+
+
+  subscribeToUserData() {
+    this.userSubscription = this.db.readDocument<User>('users', this.user.id).subscribe(userData => {
+      this.user = userData;
+    })
+  }
+  
+  unsubscribeToUserData() {
+    this.userSubscription.unsubscribe();
   }
 }
