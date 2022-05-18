@@ -54,15 +54,13 @@
 
       <ion-item lines="full">
         <ion-label position="floating">Repetir contraseña</ion-label>
-        <ion-input type="password" class="form-control" placeholder="Repetir contraseña" formControlName="alt_password" (input)="onPasswordChange()"></ion-input>
-        <ion-item
-          *ngIf="registerForm.get('alt_password')!.invalid && (registerForm.get('alt_password')!.dirty || registerForm.get('alt_password')!.touched)">
-          <ion-text color="danger" *ngIf="confirm_password.hasError('mismatch')">
+        <ion-input type="password" class="form-control" placeholder="Repetir contraseña" formControlName="alt_password"></ion-input>
+        <ion-item *ngIf="!onPasswordChange() && registerForm.get('alt_password')!.touched">
+          <ion-text color="danger">
             Las contraseñas deben coincidir
           </ion-text>
         </ion-item>
       </ion-item>
-  
       <ion-row>
         <ion-col>
           <ion-button type="submit" expand="block" [disabled]="!registerForm.valid" color="danger">Registrarse</ion-button>
