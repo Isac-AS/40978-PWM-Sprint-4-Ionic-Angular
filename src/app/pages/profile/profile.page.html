@@ -2,26 +2,49 @@
 
 <ion-content>
   <div id="profilePic">
-    <ion-input type="file" id="files" (change)="uploadProfilePicture($event)" class="hidden"></ion-input>
     <ion-avatar>
       <img [src]="userData.photoURL">
     </ion-avatar>
     <ion-title>{{ userData.name }} {{ userData.surname }}</ion-title>
+    <ion-input type="file" id="files" *ngIf="!show" (change)="uploadProfilePicture($event)" class="hidden"></ion-input>
   </div>
 
-  <ion-item lines="full">
-    <ion-icon name="mail" slot="start"></ion-icon>
-    <ion-label>{{ userData.email }}</ion-label>
-  </ion-item>
+  <ion-list *ngIf="show">
+    <ion-item lines="full">
+      <ion-icon name="mail" slot="start"></ion-icon>
+      <ion-label>{{ userData.email }}</ion-label>
+    </ion-item>
 
-  <form [formGroup]="currentUserData" (ngSubmit)="updateUserData()">
+    <ion-item lines="full">
+      <ion-icon name="person-outline" slot="start"></ion-icon>
+      <ion-label>{{ userData.name }}</ion-label>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-icon name="people-outline" slot="start"></ion-icon>
+      <ion-label>{{ userData.surname }}</ion-label>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+      <ion-textarea id="textArea" disabled="true">{{ userData.bio }}</ion-textarea>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-icon name="image-outline" slot="start"></ion-icon>
+      <ion-label>{{ userData.photoURL }}</ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  <form [formGroup]="currentUserData" *ngIf="!show" (ngSubmit)="updateUserData()">
 
     <ion-item lines="full">
       <ion-label position="floating">Nombre</ion-label>
       <ion-input  type="text" class="form-control" 
                   placeholder="Nombre de usuario" 
                   formControlName="username"
-                  [value]="userData.name"></ion-input>
+                  [(ngModel)]="userData.name"></ion-input>
       <ion-item
         *ngIf="currentUserData.get('username')!.invalid && (currentUserData.get('username')!.dirty || currentUserData.get('username')!.touched)">
         <ion-text color="danger" class="form-error" *ngIf="currentUserData.get('username')!.errors?.['required']">
@@ -35,7 +58,7 @@
       <ion-input  type="text" class="form-control" 
                   placeholder="Apellidos" 
                   formControlName="surname"
-                  [value]="userData.surname"></ion-input>
+                  [(ngModel)]="userData.surname"></ion-input>
       <ion-item
         *ngIf="currentUserData.get('surname')!.invalid && (currentUserData.get('surname')!.dirty || currentUserData.get('surname')!.touched)">
         <ion-text color="danger" class="form-error" *ngIf="currentUserData.get('surname')!.errors?.['required']">
@@ -49,14 +72,17 @@
       <ion-textarea  type="text" class="form-control" 
                   placeholder="Información adicional" 
                   formControlName="bio"
-                  [value]="userData.bio"></ion-textarea>
+                  autoGrow="true"
+                  [(ngModel)]="userData.bio"></ion-textarea>
     </ion-item>
 
-    <ion-row>
-      <ion-col>
-        <ion-button type="submit" expand="block">Modificar datos</ion-button>
-      </ion-col>
-    </ion-row>
+    <div id="buttons">
+      <ion-button type="submit" expand="block" *ngIf="!show">Guardar datos</ion-button>
+      <ion-button type="button" expand="block" *ngIf="!show" (click)="cancelModifyUser()">Cancelar</ion-button>
+    </div>
+
   </form>
+
+  <ion-button type="button" expand="block" *ngIf="show" (click)="modifyUser()">Modificar datos</ion-button>
 
 </ion-content>
