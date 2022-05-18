@@ -1,3 +1,25 @@
 ion-content {
-    --ion-background-color: #EEA10C;
+    --ion-background-color: #464646;
+}
+
+ion-avatar {
+    height: 100px;
+    width: 100px;
+    margin: auto;
+}
+
+ion-avatar img {
+
+    margin-top: 2em;
+    border: 4px solid white;
+}
+
+ion-title {
+    text-align: center;
+    margin-top: 10%;
+}
+
+#profilePic {
+    background-color: #EEA10C;
+    min-height: 25%;
 }

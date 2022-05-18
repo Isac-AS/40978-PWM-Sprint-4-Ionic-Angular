@@ -1,7 +1,57 @@
 <app-header-with-arrow [title]="'Nombre de usuario'"></app-header-with-arrow>
 
 <ion-content>
+  <div id="profilePic">
+    <ion-avatar>
+      <img src="https://preview.keenthemes.com/metronic-v4/theme_rtl/assets/pages/media/profile/profile_user.jpg">
+    </ion-avatar>
+    <ion-title>Nombre apellidos</ion-title>
+  </div>
 
+  <form [formGroup]="newUserData" (ngSubmit)="updateUserData()">
   
+    <ion-item lines="full">
+      <ion-label position="floating">Correo eléctronico</ion-label>
+      <ion-input type="text" class="form-control" placeholder="Correo Electrónico" formControlName="email"></ion-input>
+      <ion-item
+        *ngIf="newUserData.get('email')!.invalid && (newUserData.get('email')!.dirty || newUserData.get('email')!.touched)">
+        <ion-text color="danger" class="form-error" *ngIf="newUserData.get('email')!.errors?.['required']">
+          Campo Obligatorio
+        </ion-text>
+        <ion-text color="danger" class="form-error" *ngIf="newUserData.get('email')!.errors?.['email']">
+          Debe introducir una dirección de correo electrónico
+        </ion-text>
+      </ion-item>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" class="form-control" placeholder="Nombre de usuario" formControlName="username"></ion-input>
+      <ion-item
+        *ngIf="newUserData.get('username')!.invalid && (newUserData.get('username')!.dirty || newUserData.get('username')!.touched)">
+        <ion-text color="danger" class="form-error" *ngIf="newUserData.get('username')!.errors?.['required']">
+          Campo Obligatorio
+        </ion-text>
+      </ion-item>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Apellidos</ion-label>
+      <ion-input type="text" class="form-control" placeholder="Apellidos" formControlName="surname"></ion-input>
+      <ion-item
+        *ngIf="newUserData.get('surname')!.invalid && (newUserData.get('surname')!.dirty || newUserData.get('surname')!.touched)">
+        <ion-text color="danger" class="form-error" *ngIf="newUserData.get('surname')!.errors?.['required']">
+          Campo Obligatorio
+        </ion-text>
+      </ion-item>
+    </ion-item>
+  </form>
+
+  <ion-card-content>
+    <ion-item>
+      <ion-icon name="mail"></ion-icon>
+      <ion-label>prueba@prueba.com</ion-label>
+    </ion-item>
+  </ion-card-content>
 
 </ion-content>
