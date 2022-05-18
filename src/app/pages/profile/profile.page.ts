@@ -16,6 +16,8 @@ import { FireStorageService } from 'src/app/services/fire-storage.service';
 })
 export class ProfilePage implements OnInit {
 
+  public show: boolean = true;
+
   public errorMessage: string;
   public currentUserData = this.fb.group({
     username: ['', [Validators.required, Validators.minLength(2)]],
@@ -68,6 +70,14 @@ export class ProfilePage implements OnInit {
       this.userData.photoURL = await url;
       this.db.updateDocument<User>(this.userData, 'users', this.userData.id)
     })
+  }
+
+  modifyUser() {
+    this.show = false;
+  }
+
+  cancelModifyUser() {
+    this.show = true;
   }
 
   ionViewWillLeave() {
