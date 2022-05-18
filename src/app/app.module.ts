@@ -4,6 +4,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { SQLiteService } from './services/sqlite.service';
 
 // Angular Fire imports
 import { AngularFireModule} from "@angular/fire/compat";
@@ -61,6 +62,7 @@ import { ComponentsModule } from './components/components.module';
     },
     UserTrackingService,
     ScreenTrackingService,
+    SQLiteService
   ],
   bootstrap: [
     AppComponent

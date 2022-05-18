@@ -30,6 +30,7 @@ const routes: Routes = [
     MenuComponent,
     HeaderWithArrowComponent,
     ProductLoaderComponent,
+    ProductComponent
   ],
   imports: [
     CommonModule,

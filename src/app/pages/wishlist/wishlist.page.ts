@@ -8,21 +8,20 @@ import { ListService } from 'src/app/services/list.service';
 import { SQLiteService } from 'src/app/services/sqlite.service';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.page.html',
-  styleUrls: ['./product.page.scss'],
+  selector: 'app-wishlist',
+  templateUrl: './wishlist.page.html',
+  styleUrls: ['./wishlist.page.scss'],
 })
-export class ProductPage implements OnInit {
-
-  private productId: string;
-
-  public product: Product;
-  private productSubscription: Subscription;
+export class WishlistPage implements OnInit {
 
   public userData: User;
   private userDataSubscription: Subscription;
 
   sqlite: any;
+  wishlistIds: string[] = [];
+
+  public products: Product[] = [];
+  private productCollectionSubscription: Subscription;
 
   constructor(
     private auth: AuthService,
@@ -31,22 +30,24 @@ export class ProductPage implements OnInit {
     private list: ListService,
     private _sqlite: SQLiteService
   ) {
-    this.product = this.data.getCleanProduct();
     this.userData = this.data.getCleanUser();
-    this.productId = this.data.getProductId();
    }
 
-  ngOnInit() {}
-
-  ionViewWillEnter() {
-    this.getProductSubscription();
-    this.userSubscription();
+  async ngOnInit() {
+    this.productCollectionSubscription = this.db.readCollection<Product>('products').subscribe(async elements => {
+      this.products = elements;
+    })
+    let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
+    await db.open();
+    let ret: any = await db.execute(createSchema);
+    ret = await db.execute(`SELECT * FROM wishlist;`);
+    for (let productId of ret.values) {
+      this.wishlistIds.push(productId)
+    }
   }
 
-  getProductSubscription() {
-    this.productSubscription = this.db.readDocument<Product>('products', this.productId).subscribe(async product => {
-      this.product = product;
-    })
+  ionViewWillEnter() {
+    this.userSubscription();
   }
 
   userSubscription() {
@@ -58,18 +59,10 @@ export class ProductPage implements OnInit {
   }
 
   ionViewWillLeave() {
-    this.productSubscription.unsubscribe();
     this.userDataSubscription.unsubscribe();
+    this.productCollectionSubscription.unsubscribe();
   }
-
-  async addToWishlist(productId: string) {
-    this.list.addToWishlist(productId, this.userData);
-    let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
-    await db.open();
-    let ret: any = await db.execute(createSchema);
-    ret = await db.execute(`INSERT INTO wishlist (id) VALUES ("${productId}");`);
-  }
-
+  
   async removeFromWishlist(productId: string) {
     this.list.removeFromWishList(productId, this.userData);
     let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
@@ -78,10 +71,8 @@ export class ProductPage implements OnInit {
     ret = await db.execute(`DELETE FROM wishlist WHERE id='${productId}';`);
   }
 
-  isInWishlist(productId: string): boolean {
-    return this.list.isInWishlist(this.userData.wishlist, productId);
+  contains(productId: string): boolean {
+    return this.list.isInWishlist(this.wishlistIds, productId)
   }
-
-  
 
 }

@@ -1,0 +1,8 @@
+<app-header-with-arrow [title]="'Lista de deseos'"></app-header-with-arrow>
+<ion-content>
+    <ng-container *ngFor="let product of products">
+        <div *ngIf="contains(product.id)">
+          <app-product [productId]="product.id"></app-product>
+        </div>
+    </ng-container>
+</ion-content>
