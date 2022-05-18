@@ -1,0 +1,101 @@
+@media (prefers-color-scheme: dark){
+
+img {
+    margin-top: 5%;
+    max-width: 75%;
+    border-radius: 20px;
+}
+
+ion-card {
+    background-color:#EEA10C;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    margin: 10% 10% 10% 10%;
+    text-align: center;
+}
+
+ion-card-header {
+    color: white;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+
+ion-card-subtitle {
+    color: white;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+ion-card-content {
+    display: flex;
+    justify-content: space-around;
+}
+
+#discountPercentage{
+    color: white;
+    background-color: red;
+    padding: 0.5% 0.5% 0.5% 0.5%;
+}
+
+#oldPrice{
+    text-decoration: line-through;
+    color: white;
+    font-size: 15px;
+}
+
+}
+
+@media (prefers-color-scheme: light){
+
+    
+    img {
+        margin-top: 5%;
+        max-width: 75%;
+        border-radius: 20px;
+    }
+    
+    ion-card {
+        background-color: #EEA10C;
+        display: flex;
+        border-radius: 10px;
+        justify-content: center;
+        margin: 10% 10% 10% 10%;
+        text-align: center;
+    }
+    
+    
+    ion-card-header {
+        color: black;
+        font-weight: bolder;
+        font-size: 20px;
+    }
+    
+    
+    ion-card-subtitle {
+        color: black;
+        font-weight: bold;
+        font-size: 25px;
+    }
+    
+    ion-card-content {
+        display: flex;
+        justify-content: space-around;
+    }
+    
+    #discountPercentage{
+        color: black;
+        background-color: red;
+        padding: 0.5% 0.5% 0.5% 0.5%;
+    }
+    
+    #oldPrice{
+        text-decoration: line-through;
+        color: black;
+        font-size: 15px;
+    }
+    
+
+
+}

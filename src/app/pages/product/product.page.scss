@@ -1,0 +1,132 @@
+@media (prefers-color-scheme: dark){
+
+img {
+    margin-top: 5%;
+    max-width: 75%;
+    border-radius: 20px;
+}
+ion-content{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 10% 5% 10% 5%;
+}
+
+ion-card{
+    margin: 10% 5% 10% 5%;
+    padding-bottom: 5%;
+}
+
+ion-card-header {
+    color: white;
+    font-weight: bolder;
+    font-size: 32px;
+}
+
+ion-card-content {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10%;
+}
+
+#price{
+    color: #EEA10C;
+    font-size: 50px;
+    padding: 0.5% 0.5% 0.5% 0.5%;
+}
+
+#discountPercentage{
+    color: white;
+    font-size: 20px;
+    background-color: red;
+    padding: 0.5% 0.5% 0.5% 0.5%;
+}
+
+#oldPrice{
+    text-decoration: line-through;
+    color: white;
+    font-size: 20px;
+}
+#description {
+
+    font-size: 17px;
+    color: white;
+}
+
+ion-button {
+    margin: 1% 1% 10% 1%;
+    --background:#EEA10C;
+    color: white;
+}
+
+ion-icon {
+    color: white;
+}
+}
+
+
+@media (prefers-color-scheme: light){
+
+    img {
+        margin-top: 5%;
+        max-width: 75%;
+        border-radius: 20px;
+    }
+    ion-content{
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        padding: 10% 5% 10% 5%;
+    }
+    
+    ion-card{
+        margin: 10% 5% 10% 5%;
+        padding-bottom: 5%;
+    }
+    
+    ion-card-header {
+        color: black;
+        font-weight: bolder;
+        font-size: 32px;
+    }
+    
+    ion-card-content {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 10%;
+    }
+    
+    #price{
+        color: #EEA10C;
+        font-size: 50px;
+        padding: 0.5% 0.5% 0.5% 0.5%;
+    }
+    
+    #discountPercentage{
+        color: black;
+        font-size: 20px;
+        background-color: red;
+        padding: 0.5% 0.5% 0.5% 0.5%;
+    }
+    
+    #oldPrice{
+        text-decoration: line-through;
+        color: black;
+        font-size: 20px;
+    }
+    #description {
+    
+        font-size: 17px;
+        color: black;
+    }
+    
+    ion-button {
+        margin: 1% 1% 10% 1%;
+        --background:#EEA10C;
+        color: black;
+    }
+    
+    ion-icon {
+        color: black;
+    }
+    }
