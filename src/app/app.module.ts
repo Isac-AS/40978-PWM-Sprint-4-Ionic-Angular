@@ -24,10 +24,12 @@ import { provideAnalytics,getAnalytics,ScreenTrackingService,UserTrackingService
 
 // Components
 import { ComponentsModule } from './components/components.module';
+import { FavPagePipe } from './pages/fav-page.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
+    FavPagePipe,
   ],
   entryComponents: [
 

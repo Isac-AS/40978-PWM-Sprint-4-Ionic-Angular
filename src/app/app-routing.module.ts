@@ -24,7 +24,11 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule),
     canActivate: [AngularFireAuthGuard]
+  },  {
+    path: 'fav-page',
+    loadChildren: () => import('./pages/fav-page/fav-page.module').then( m => m.FavPagePageModule)
   },
+
 
 
 ];
