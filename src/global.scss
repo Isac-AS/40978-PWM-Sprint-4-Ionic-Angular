@@ -28,3 +28,10 @@
 * {
     font-family: IBM Plex Sans, sans-serif, sans-serif-condensed, serif;
   }
+
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/android/app/src/main/res/font/ibm_plex_sans.ttf') format('TrueType');
+  }
