@@ -65,7 +65,7 @@ export interface MessagePopupPair {
 
 export const createSchema: string = `
   CREATE TABLE IF NOT EXISTS wishlist (
-    id TEXT PRIMARY KEY NOT NULL,
+    id TEXT PRIMARY KEY NOT NULL
   );
   `;
 

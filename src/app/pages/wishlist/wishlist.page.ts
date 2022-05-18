@@ -41,6 +41,7 @@ export class WishlistPage implements OnInit {
 
   ionViewWillEnter() {
     this.userSubscription();
+    this.wishlistIds = []
   }
   
   ionViewDidEnter() {
@@ -60,10 +61,15 @@ export class WishlistPage implements OnInit {
       let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
       await db.open();
       let ret: any = await db.execute(createSchema);
-      ret = await db.execute(`SELECT * FROM wishlist;`);
+      ret = await db.query(`SELECT * FROM wishlist;`);
+      console.log("Se acaba de hacer el query ->",ret)
       for (let productId of ret.values) {
-        this.wishlistIds.push(productId)
+        console.log("Ret.values ->",productId.id)
+        this.wishlistIds.push(productId.id)
       }
+      console.log("Lista despues de haberla llenado->", this.wishlistIds)
+      await db.close();
+      await this._sqlite.closeAllConnections();
     } else {
       this.wishlistIds = this.userData.wishlist
     }
@@ -72,16 +78,6 @@ export class WishlistPage implements OnInit {
   ionViewWillLeave() {
     this.userDataSubscription.unsubscribe();
     this.productCollectionSubscription.unsubscribe();
-  }
-
-  async removeFromWishlist(productId: string) {
-    this.list.removeFromWishList(productId, this.userData);
-    if (this._sqlite.platform != "web") {
-      let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
-      await db.open();
-      let ret: any = await db.execute(createSchema);
-      ret = await db.execute(`DELETE FROM wishlist WHERE id='${productId}';`);
-    }
   }
 
   contains(productId: string): boolean {

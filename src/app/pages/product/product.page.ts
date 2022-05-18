@@ -68,8 +68,10 @@ export class ProductPage implements OnInit {
       let db = await this._sqlite.createConnection("database", false, "no-encryption", 1)
       await db.open();
       let ret: any = await db.execute(createSchema);
-      console.log('$$$ ret.changes.changes in db ' + ret.changes.changes)
       ret = await db.execute(`INSERT INTO wishlist (id) VALUES ("${productId}");`);
+      console.log("Se acaba de añadir un elemento ->", ret)
+      await db.close();
+      await this._sqlite.closeAllConnections();
     }
   }
 
@@ -80,13 +82,13 @@ export class ProductPage implements OnInit {
       await db.open();
       let ret: any = await db.execute(createSchema);
       ret = await db.execute(`DELETE FROM wishlist WHERE id='${productId}';`);
+      console.log("Se acaba de eliminar un elemento ->", ret)
+      await db.close();
+      await this._sqlite.closeAllConnections();
     }
   }
 
   isInWishlist(productId: string): boolean {
     return this.list.isInWishlist(this.userData.wishlist, productId);
   }
-
-
-
 }
