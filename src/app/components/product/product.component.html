@@ -1,0 +1,9 @@
+<ion-card [routerLink]="['/product']" (click)="setId(productId)">
+  <img src="{{product.imageUrl}}">
+  <ion-card-header>{{ product.name }}</ion-card-header>
+  <ion-card-subtitle>{{ product.price }}€</ion-card-subtitle>
+  <ion-card-content *ngIf="product.discount > 0" id="discount">
+    <ion-text id="oldPrice">{{ product.priceWithoutTax }}€</ion-text>
+    <ion-text id="discountPercentage">{{ product.discount }}%</ion-text>
+  </ion-card-content>
+</ion-card>

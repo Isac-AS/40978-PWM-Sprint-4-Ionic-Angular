@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '../models/interfaces';
+import { Product, User } from '../models/interfaces';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { DatabaseService } from './database.service';
 import { AuthService } from './auth.service';
@@ -10,17 +10,10 @@ import { take } from 'rxjs/operators';
 })
 export class DataService {
 
-  private user: User;
-  public currentUser: BehaviorSubject<User>;
-  private userSubscription: Subscription;
+  private productId: string;
+  private category: string;
 
-  constructor(
-    private auth: AuthService,
-    private db: DatabaseService,
-  ) {
-    this.user = this.getCleanUser();
-    this.currentUser = new BehaviorSubject(this.user);
-  }
+  constructor() { }
 
   getCleanUser(): User {
     return {
@@ -32,35 +25,38 @@ export class DataService {
       id: '',
       profile: 'regular',
       photoURL: '',
-      shoppingCart: [],
       wishlist: []
     }
   }
   
-  getCleanProduct() {
+  getCleanProduct(): Product {
     return {
       id: '',
       name: '',
       extendedName: '',
       description: '',
-      price: '',
-      priceWithoutTax: '',
+      price: 0,
+      priceWithoutTax: 0,
       brand: '',
       imageUrl: '',
       category: '',
-      discount: '',
+      discount: 0,
     }
   }
 
-
-
-  subscribeToUserData() {
-    this.userSubscription = this.db.readDocument<User>('users', this.user.id).subscribe(userData => {
-      this.user = userData;
-    })
+  setProductId(id: string) {
+    this.productId = id;
   }
-  
-  unsubscribeToUserData() {
-    this.userSubscription.unsubscribe();
+
+  getProductId(): string {
+    return this.productId;
+  }
+
+  setCategory(category: string) {
+    this.category = category;
+  }
+
+  getCategory(): string {
+    return this.category;
   }
 }

@@ -15,16 +15,15 @@
   }
   
   export interface User {
-    email: string
-    password: string
-    name: string
-    surname: string
-    bio: string
-    id: string
-    profile: 'admin' | 'regular'
-    photoURL: string
-    shoppingCart: Product[],
-    wishlist: Product[],
+    email: string,
+    password: string,
+    name: string,
+    surname: string,
+    bio: string,
+    id: string,
+    profile: 'admin' | 'regular',
+    photoURL: string,
+    wishlist: string[],
   }
 
     export interface Ticket {

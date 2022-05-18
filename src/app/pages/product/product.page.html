@@ -1,0 +1,21 @@
+<app-header-with-arrow [title]="product.name"></app-header-with-arrow>
+
+<ion-content>
+    <ion-card>
+        <img src="{{product.imageUrl}}">
+        <ion-card-header>{{ product.name }}</ion-card-header>
+        <ion-card-subtitle>{{ product.price }}€</ion-card-subtitle>
+        <ion-card-content *ngIf="product.discount > 0" id="discount">
+          <ion-text id="oldPrice">{{ product.priceWithoutTax }}€</ion-text>
+          <ion-text id="discountPercentage">{{ product.discount }}%</ion-text>
+        </ion-card-content>
+      </ion-card>
+      <ion-item *ngIf="!isInWishlist(product.id)" (click)="addToWishlist(product.id)">
+        <ion-icon name="star-outline" slot="start"></ion-icon>
+        <ion-label>Añadir a la lista de deseos</ion-label>
+      </ion-item>
+      <ion-item *ngIf="isInWishlist(product.id)" (click)="removeFromWishlist(product.id)">
+        <ion-icon name="star" slot="start"></ion-icon>
+        <ion-label>Eliminar de la lista de deseos</ion-label>
+      </ion-item>
+</ion-content>

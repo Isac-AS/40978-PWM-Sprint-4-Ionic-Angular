@@ -1,0 +1,24 @@
+<div id="productContainer">
+  <ng-container *ngFor="let product of products">
+    <ng-container *ngIf="product.price >= minPrice && product.price <= maxPrice">
+
+      <div *ngIf="product.category === whatToLoad">
+        <app-product [productId]="product.id"></app-product>
+      </div>
+
+      <div *ngIf="whatToLoad === 'all'">
+        <app-product [productId]="product.id"></app-product>
+      </div>
+
+      <div *ngIf="whatToLoad === 'discount' &&
+                product.discount > 10">
+        <app-product [productId]="product.id"></app-product>
+      </div>
+
+      <div *ngIf="whatToLoad === 'promotion' &&
+                product.discount > 30">
+        <app-product [productId]="product.id"></app-product>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
